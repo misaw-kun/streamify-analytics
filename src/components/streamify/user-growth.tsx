@@ -30,7 +30,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function UserGrowth() {
+export default function UserGrowth({ className }: { className?: string }) {
   const [userGrowth, setUserGrowth] = useState<UserGrowthData[] | null>(null);
   const [activeChart, setActiveChart] =
     useState<keyof typeof chartConfig>("totalUsers");
@@ -52,10 +52,10 @@ export default function UserGrowth() {
   if (!userGrowth) return <div>Loading...</div>;
 
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>User Growth - Interactive</CardTitle>
+          <CardTitle>User Growth - Interactive Line Chart</CardTitle>
           <CardDescription>
             Showing the growth in the number of total users and active users
             over the past 12 months.

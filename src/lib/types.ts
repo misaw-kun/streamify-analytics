@@ -20,3 +20,10 @@ export type RevenueData = {
   affiliateMarketing: number;
   totalRevenue: number;
 };
+
+export type Song = {
+  id: number;
+  title: string;
+  artist: string;
+  streams: number;
+};

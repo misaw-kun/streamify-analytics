@@ -38,7 +38,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function RevenueDistrib() {
+export default function RevenueDistrib({ className }: { className?: string }) {
   const id = "pie-interactive";
 
   const [revenueData, setRevenueData] = useState<RevenueData[]>([]);
@@ -109,7 +109,7 @@ export default function RevenueDistrib() {
   }
 
   return (
-    <Card data-chart={id} className="flex flex-col">
+    <Card data-chart={id} className={`flex flex-col ${className}`}>
       <ChartStyle id={id} config={chartConfig} />
       <CardHeader className="flex-row items-start space-y-0 pb-0">
         <div className="grid gap-1">

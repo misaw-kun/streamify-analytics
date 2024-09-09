@@ -129,11 +129,31 @@ export default function initMockServer() {
       // Endpoint: GET /api/top-songs
       this.get("/top-songs", () => {
         return [
-          { songName: "Song A", artist: "Artist A", streamCount: 150000 },
-          { songName: "Song B", artist: "Artist B", streamCount: 130000 },
-          { songName: "Song C", artist: "Artist C", streamCount: 120000 },
-          { songName: "Song D", artist: "Artist D", streamCount: 110000 },
-          { songName: "Song E", artist: "Artist E", streamCount: 100000 },
+          {
+            songName: "Song A",
+            artist: "Artist A",
+            streamCount: getRandom(150000, -10000, 10000),
+          },
+          {
+            songName: "Song B",
+            artist: "Artist B",
+            streamCount: getRandom(130000, -10000, 10000),
+          },
+          {
+            songName: "Song C",
+            artist: "Artist C",
+            streamCount: getRandom(120000, -10000, 10000),
+          },
+          {
+            songName: "Song D",
+            artist: "Artist D",
+            streamCount: getRandom(110000, -10000, 10000),
+          },
+          {
+            songName: "Song E",
+            artist: "Artist E",
+            streamCount: getRandom(100000, -10000, 10000),
+          },
         ];
       });
 

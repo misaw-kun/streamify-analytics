@@ -4,6 +4,7 @@ import { Metrics } from "./lib/types";
 import { Activity, DollarSign, Music, Star, Users } from "lucide-react";
 import UserGrowth from "./components/streamify/user-growth";
 import RevenueDistrib from "./components/streamify/revenue-distrib";
+import TopStreamed from "./components/streamify/top-streamed";
 
 function App() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
@@ -20,7 +21,7 @@ function App() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <div className="grid gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-5">
+        <section className="grid gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-5">
           <KeyMetric
             title="Total Users"
             metric={metrics.totalUsers}
@@ -46,9 +47,12 @@ function App() {
             metric={metrics.topArtist}
             icon={Star}
           />
-        </div>
-        <UserGrowth />
-        <RevenueDistrib />
+        </section>
+        <section className="grid gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+          <UserGrowth className="md:col-span-3" />
+          <RevenueDistrib className="md:col-span-1" />
+          <TopStreamed className="md:col-span-2" />
+        </section>
       </main>
     </div>
   );
