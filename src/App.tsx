@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import KeyMetric from "./components/streamify/key-metric";
+import { Metrics } from "./lib/types";
+import { Activity, DollarSign, Music, Star, Users } from "lucide-react";
+import UserGrowth from "./components/streamify/user-growth";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [metrics, setMetrics] = useState<Metrics | null>(null);
+
+  useEffect(() => {
+    fetch("/api/metrics")
+      .then((res) => res.json())
+      .then((data) => setMetrics(data))
+      .catch((err) => console.error("Error fetching metrics", err));
+  }, []);
+
+  if (!metrics) return <div>Loading...</div>;
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="flex min-h-screen w-full flex-col">
+      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        <div className="grid gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-5">
+          <KeyMetric
+            title="Total Users"
+            metric={metrics.totalUsers}
+            icon={Users}
+          />
+          <KeyMetric
+            title="Active Users"
+            metric={metrics.activeUsers}
+            icon={Activity}
+          />
+          <KeyMetric
+            title="Total Streams"
+            metric={metrics.totalStreams}
+            icon={Music}
+          />
+          <KeyMetric
+            title="Revenue"
+            metric={`$${metrics.revenue}`}
+            icon={DollarSign}
+          />
+          <KeyMetric
+            title="Top Artist"
+            metric={metrics.topArtist}
+            icon={Star}
+          />
+        </div>
+        <UserGrowth />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
