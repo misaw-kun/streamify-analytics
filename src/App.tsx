@@ -3,6 +3,7 @@ import KeyMetric from "./components/streamify/key-metric";
 import { Metrics } from "./lib/types";
 import { Activity, DollarSign, Music, Star, Users } from "lucide-react";
 import UserGrowth from "./components/streamify/user-growth";
+import RevenueDistrib from "./components/streamify/revenue-distrib";
 
 function App() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
@@ -47,6 +48,7 @@ function App() {
           />
         </div>
         <UserGrowth />
+        <RevenueDistrib />
       </main>
     </div>
   );

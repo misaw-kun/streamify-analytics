@@ -11,3 +11,12 @@ export type UserGrowthData = {
   totalUsers: number;
   activeUsers: number;
 };
+
+export type RevenueData = {
+  month: string;
+  subscriptions: number;
+  ads: number;
+  inAppPurchases: number;
+  affiliateMarketing: number;
+  totalRevenue: number;
+};
