@@ -27,3 +27,11 @@ export type Song = {
   artist: string;
   streams: number;
 };
+
+export type StreamData = {
+  id: string;
+  artist: string;
+  song: string;
+  date: string;
+  streamCount: number;
+};

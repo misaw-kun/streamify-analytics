@@ -1,5 +1,4 @@
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -15,6 +14,7 @@ import {
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import { Song } from "@/lib/types";
+import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   streamCount: {
@@ -39,55 +39,61 @@ export default function TopStreamed({ className }: { className?: string }) {
       .then((res) => res.json())
       .then((data) => setSongs(data));
   }, []);
-  return (
-    <Card className={className}>
-      <CardHeader>
-        <CardTitle>Top 5 Streamed Songs - Interactive Bar Chart</CardTitle>
-        <CardDescription>Streams over the past 30 days</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={songs}
-            margin={{
-              top: 20,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="songName"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar
-              dataKey="streamCount"
-              fill="var(--color-streamCount)"
-              radius={8}
+
+  if (!songs.length) {
+    return (
+      <Card className={className}>
+        <CardHeader>
+          <Skeleton className="w-full h-[50px]" />
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="w-full h-[350px]" />
+        </CardContent>
+      </Card>
+    );
+  } else {
+    return (
+      <Card className={className}>
+        <CardHeader>
+          <CardTitle>Top 5 Streamed Songs - Interactive Bar Chart</CardTitle>
+          <CardDescription>Streams over the past 30 days</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig}>
+            <BarChart
+              accessibilityLayer
+              data={songs}
+              margin={{
+                top: 20,
+              }}
             >
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="songName"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
               />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-      {/* <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter> */}
-    </Card>
-  );
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Bar
+                dataKey="streamCount"
+                fill="var(--color-streamCount)"
+                radius={8}
+              >
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Bar>
+            </BarChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+    );
+  }
 }

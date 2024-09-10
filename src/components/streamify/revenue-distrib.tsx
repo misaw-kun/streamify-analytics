@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useMemo, useState } from "react";
 import { RevenueData } from "@/lib/types";
+import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   subscriptions: {
@@ -105,7 +106,18 @@ export default function RevenueDistrib({ className }: { className?: string }) {
   ];
 
   if (!revenueData.length || activeIndex === -1) {
-    return <div>Loading...</div>;
+    return (
+      <Card data-chart={id} className={`flex flex-col gap-12 ${className}`}>
+        <CardHeader className="flex-row items-start space-y-0 pb-0">
+          <Skeleton className="w-full h-[50px]" />
+        </CardHeader>
+        <CardContent className="flex flex-1 justify-center pb-0 ">
+          <div className="mx-auto aspect-square w-full max-w-[400px]">
+            <Skeleton className="mx-auto aspect-square w-full max-w-[400px]" />
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
@@ -113,7 +125,7 @@ export default function RevenueDistrib({ className }: { className?: string }) {
       <ChartStyle id={id} config={chartConfig} />
       <CardHeader className="flex-row items-start space-y-0 pb-0">
         <div className="grid gap-1">
-          <CardTitle>Revenue Breakdown - Interactive Pie Chart</CardTitle>
+          <CardTitle>Revenue Breakdown</CardTitle>
           <CardDescription>Revenue by Source for 2024</CardDescription>
         </div>
         <Select value={activeMonth} onValueChange={setActiveMonth}>
