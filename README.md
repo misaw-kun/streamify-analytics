@@ -12,7 +12,7 @@ A music streaming analytics dashboard for a take-home assessment. 📊
 
 ## 🌐 Live Demo
 
-[Check it out here!](#)
+[Check it out here!](https://streamify-analytics.vercel.app/)
 
 ## 💡 Getting Started
 
