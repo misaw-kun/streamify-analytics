@@ -1,11 +1,9 @@
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
-  ColumnFiltersState,
   SortingState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -22,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { StreamData } from "@/lib/types";
-import { useEffect, useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Skeleton } from "../ui/skeleton";
 
 // defining columns with sorting and filtering
@@ -97,7 +95,7 @@ const columns: ColumnDef<StreamData>[] = [
 export default function RecentStreams({ className }: { className?: string }) {
   const [data, setData] = useState<StreamData[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetch("/api/recent-streams")
@@ -105,18 +103,23 @@ export default function RecentStreams({ className }: { className?: string }) {
       .then((data) => setData(data));
   }, []);
 
+  const filteredData = useMemo(() => {
+    return data.filter(
+      (item) =>
+        item.artist.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.song.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [data, searchTerm]);
+
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
-      columnFilters,
     },
   });
 
@@ -140,22 +143,12 @@ export default function RecentStreams({ className }: { className?: string }) {
 
   return (
     <div className={className}>
-      {/* search fields */}
-      <div className="flex items-center py-4 space-x-4">
+      {/* search field */}
+      <div className="flex items-center py-4">
         <Input
-          placeholder="Filter by artist..."
-          value={(table.getColumn("artist")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("artist")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <Input
-          placeholder="Filter by song..."
-          value={(table.getColumn("song")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("song")?.setFilterValue(event.target.value)
-          }
+          placeholder="Search by artist or song..."
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
           className="max-w-sm"
         />
       </div>
